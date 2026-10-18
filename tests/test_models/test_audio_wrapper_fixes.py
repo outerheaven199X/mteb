@@ -22,7 +22,9 @@ import numpy as np
 import pytest
 import torch
 
-WRAPPERS_DIR = Path(__file__).resolve().parents[2] / "mteb" / "models" / "model_implementations"
+WRAPPERS_DIR = (
+    Path(__file__).resolve().parents[2] / "mteb" / "models" / "model_implementations"
+)
 
 
 class TestMuQNumpyBridge:
@@ -40,7 +42,9 @@ class TestMuQNumpyBridge:
         # The fixed pattern used by the wrapper works for float32 and casts
         # other dtypes through an explicit float32 view, preserving the
         # float32 destination semantics.
-        batch_tensor[0, :5] = torch.from_numpy(np.ascontiguousarray(arr, dtype=np.float32))
+        batch_tensor[0, :5] = torch.from_numpy(
+            np.ascontiguousarray(arr, dtype=np.float32)
+        )
         assert batch_tensor[0, :5].tolist() == arr.tolist()
         assert batch_tensor.dtype == torch.float32
 
@@ -67,7 +71,9 @@ class TestMuQNumpyBridge:
         )
 
         # Exercise the exact code path: numpy arrays in, batch tensor out.
-        audio_arrays = [np.random.default_rng(0).standard_normal(16000).astype(np.float32)]
+        audio_arrays = [
+            np.random.default_rng(0).standard_normal(16000).astype(np.float32)
+        ]
         max_length = max(arr.shape[-1] for arr in audio_arrays)
         batch_tensor = torch.zeros(len(audio_arrays), max_length, dtype=torch.float32)
         for idx, arr in enumerate(audio_arrays):
